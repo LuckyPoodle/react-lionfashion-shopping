@@ -51,8 +51,9 @@ render(){
     return (
         <div className='directory-menu'>
             {
-                this.state.sections.map(({title,imageUrl,id, size})=>(
-                    <MenuItem key={id} title={title} imageUrl={imageUrl} size={size}/>
+              /* es6 trick , we can {id,...othersectionprops} in map, then pass to MenuItem <MenuItem key={id} {...othersectionprops}*/
+                this.state.sections.map(({title,imageUrl,id, size, linkUrl})=>(  
+                    <MenuItem key={id} title={title} imageUrl={imageUrl} size={size} linkUrl={linkUrl}/>
                 ))
             }
         </div>
