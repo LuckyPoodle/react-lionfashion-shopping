@@ -1,6 +1,8 @@
 import React from 'react';
 
-import {Switch,Route} from 'react-router-dom';
+import {Switch,Route, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {setCurrentUser} from './redux/user/user-actions';
 
 import './App.css';
 import HomePage from './pages/homepage/homepage.component';
@@ -26,12 +28,7 @@ const womenpage=()=>(
 
 class App extends React.Component {
 
-  constructor(){
-    super();
-    this.state={
-      currentUser:null
-    }
-  }
+ 
 
   /*this is a method that go into the prototype Object (outside constructor) ES6 dunnid declare with var/const/let*/
   unsubscribeFromAuth=null;
@@ -39,6 +36,11 @@ class App extends React.Component {
 
 
   componentDidMount(){
+
+    const {setCurrentUser}=this.props;
+
+
+
     /*unsubscribeFromAuth is reassigned to the return value of auth.onAuthStateChanged() which is firebase.unsubscribe()*/
     this.unsubscribeFromAuth=auth.onAuthStateChanged(async user=>{
 
@@ -46,22 +48,23 @@ class App extends React.Component {
           
        const userRef= await createUserProfileDocument(user);
        userRef.onSnapshot(snapShot =>{  /*what we got back is a snapshot object */
-          this.setState({
-            currentUser:{
-              id:snapShot.id,
-              ...snapShot.data()
-            }
-            
-          },()=>{
-            console.log('componentdidmount. after setstate');
-            console.log(this.state)
-          }) 
+         setCurrentUser({
+          id:snapShot.id,
+          ...snapShot.data()
+         }
+         
+         )
+         console.log("***************snapshot*********************");
+      console.log(snapShot.id); 
+      console.log(snapShot.data); 
 
        });
 
        
       }
-      this.setState({currentUser:user});
+      setCurrentUser(user);
+      console.log("***************user*********************");
+      console.log(user);
 
 
     });
@@ -74,11 +77,11 @@ class App extends React.Component {
 
     return (
       <div >
-        <Header currentUser={this.state.currentUser}/>
+        <Header />
         <Switch>
         <Route exact path='/' component={HomePage}/>
         <Route exact path='/shop' component={ShopPage}/>
-        <Route exact path='/signin' component={SignInAndSignUpPage}/>
+        <Route exact path='/signin' render={()=>this.props.currentUser?(<Redirect to='/' />):(<SignInAndSignUpPage />)}/>
         <Route path='/shop/hats' component={HatsPage}/>
         <Route path='/shop/womens' component={womenpage}/>
   
@@ -91,4 +94,15 @@ class App extends React.Component {
 
 }
 
-export default App;
+
+const mapStateToProps=({user})=>(
+  {
+    currentUser:user.currentUser
+  }
+)
+
+const mapDispatchToProps=dispatch=>({
+  setCurrentUser:user=>dispatch(setCurrentUser(user))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
