@@ -8,7 +8,11 @@ import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 
 import {ReactComponent as Logo} from '../../assets/yellowlion.svg';
-const Header=({currentUser,hidden})=>(
+const Header=({currentUser,hidden})=>{
+    console.log("HEADERRRR");
+    console.log(hidden);
+    
+    return(
     <div className='header'>
         <Link className='logo-container' to="/">
             <Logo className='logo'/>     
@@ -27,12 +31,13 @@ const Header=({currentUser,hidden})=>(
                     <CartIcon />
                
             </div>
+            
             {
                 hidden?null:<CartDropDown />
             }
         
         </div>
-);
+)};
 
 
 
