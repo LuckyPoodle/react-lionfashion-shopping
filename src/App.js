@@ -9,22 +9,13 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-out/sign-in-and-sign-out.component';
+import Checkout from './pages/checkout/checkout.component';
+import Footer from './components/footer/footer';
 
-import {auth,createUserProfileDocument} from './firebase/fire.util';
+import {addCollectionAndItems, auth,createUserProfileDocument} from './firebase/fire.util';
 
-const HatsPage=()=>(
-  <div>
-    <h1>HATS page</h1>
-  </div>
-)
+import {selectCollectionsForPreview} from './redux/shop/shop.selector';
 
-
-
-const womenpage=()=>(
-  <div>
-    <h1>women page</h1>
-  </div>
-)
 
 class App extends React.Component {
 
@@ -54,17 +45,26 @@ class App extends React.Component {
          }
          
          )
-         console.log("***************snapshot*********************");
-      console.log(snapShot.id); 
-      console.log(snapShot.data); 
+         console.log("***************IN IF USER*********************");
+   
+
+
+
+         //*****ONE OFF to add all SHOP DATA to firebase automatically to save manual entry time!!! */
+        /*  let shopArray=Object.keys(this.props.collections).map((key)=>this.props.collections[key]);
+         addCollectionAndItems('collections',shopArray.map(({title,items})=>({title,items}))) */
+
+         
 
        });
 
        
+      }else{
+        setCurrentUser(user);
+        console.log("***************ELSE*********************");
+        console.log(user);
       }
-      setCurrentUser(user);
-      console.log("***************user*********************");
-      console.log(user);
+    
 
 
     });
@@ -80,12 +80,16 @@ class App extends React.Component {
         <Header />
         <Switch>
         <Route exact path='/' component={HomePage}/>
-        <Route exact path='/shop' component={ShopPage}/>
+        <Route path='/shop' component={ShopPage}/>
         <Route exact path='/signin' render={()=>this.props.currentUser?(<Redirect to='/' />):(<SignInAndSignUpPage />)}/>
-        <Route path='/shop/hats' component={HatsPage}/>
-        <Route path='/shop/womens' component={womenpage}/>
+      
+        <Route exact path='/checkout' component={Checkout}/>
+
   
         </Switch>
+
+        <Footer />
+
      
       </div>
     );
@@ -95,9 +99,10 @@ class App extends React.Component {
 }
 
 
-const mapStateToProps=({user})=>(
+const mapStateToProps=({user,shop})=>(
   {
-    currentUser:user.currentUser
+    currentUser:user.currentUser,
+    //collections:shop.collections
   }
 )
 

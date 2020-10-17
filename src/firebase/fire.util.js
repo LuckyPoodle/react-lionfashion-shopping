@@ -25,6 +25,7 @@ export const createUserProfileDocument=async (userAuth,additionalData)=>{
   if (!userAuth)return;
 
   /*query inside firestore to see if already exist*/
+  /*firebase will always return us a reference object and snapshot object even if nothing exists there*/
   const userRef=firestore.doc(`users/${userAuth.uid}`);
   const snapshot=await userRef.get();
 
@@ -48,7 +49,62 @@ export const createUserProfileDocument=async (userAuth,additionalData)=>{
   }
   return userRef;
 
+};
+
+
+
+//*****ONE OFF to add all SHOP DATA to firebase automatically to save manual entry time!!! */
+export const addCollectionAndItems=async (collectionKey,objectToAdd)=>{
+  const collectionRef=firestore.collection(collectionKey);
+  //batch write
+  const batch=firestore.batch();
+  
+  objectToAdd.forEach((obj) =>{
+    const newDocRef=collectionRef.doc();
+    batch.set(newDocRef,obj);
+
+  });
+
+  return await batch.commit()
+
 }
+
+
+
+export const convertCollectionsSnapshotToMap=(collections)=>{
+  const transformedCollection=collections.docs.map(doc=>{
+    const {title,items}=doc.data();
+
+    return {
+      routeName:encodeURI(title.toLowerCase()),
+      id:doc.id,
+      title,
+      items
+    }
+  }
+  );
+
+  //returned object go into next object until we end up with an object where the title of each object is the KEY
+  return transformedCollection.reduce((accumulator,collection)=>{
+    accumulator[collection.title.toLowerCase()]=collection;
+    return accumulator;
+  },{});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const provider=new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({prompt:'select_account'}) /*trigger google popup*/
