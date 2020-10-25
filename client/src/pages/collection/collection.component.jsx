@@ -4,7 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {selectCollection} from '../../redux/shop/shop.selector';
 import CollectionItem from '../../components/collection-item/collection-item.component';
-
+import NotFound from '../../components/404/notfound.component';
 
 import './collection.styles.scss';
 
@@ -12,7 +12,8 @@ const CollectionPage = ({ collection}) => {
 
   if (!collection){
 
-    return (<h1>...</h1>);
+    return ( <NotFound msg='Sorry the dog ate the collection you are looking for'/> 
+    );
    
   }
 

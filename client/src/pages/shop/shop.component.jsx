@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 
 import {connect} from 'react-redux';
 
@@ -13,6 +13,7 @@ import WithSpinner from '../../components/with-spinner/with-spinner.component';
 import {createStructuredSelector} from 'reselect';
 import {selectIsCollectionFetching } from '../../redux/shop/shop.selector';
 import { fetchCollectionsStartAync } from '../../redux/shop/shop.actions';
+import NotFound from '../../components/404/notfound.component';
 
 
 const CollectionsOverviewWithSpinner =WithSpinner(CollectionsOverview);
@@ -34,7 +35,7 @@ class ShopPage extends React.Component{
     }
 
     render(){
-        console.log("*****SHOP RENDER *******");
+  
         const {match,isCollectionFetching}=this.props;
 
          //shop page is nested in a route in app.js
@@ -43,7 +44,9 @@ class ShopPage extends React.Component{
     
     
 <div className='shop-page'>
-    
+    <Switch>
+
+
     <Route exact path={`${match.path}`} 
     
     //render={(props)=><CollectionsOverviewWithSpinner isLoading={isCollectionFetching} {...props} />} 
@@ -52,6 +55,9 @@ class ShopPage extends React.Component{
     
     
     <Route path={`${match.path}/:categoryId`} render={(props)=><CollectionPageWithSpinner isLoading={isCollectionFetching} {...props} />} />
+  
+    </Switch>
+  
     
 </div>)}
 
