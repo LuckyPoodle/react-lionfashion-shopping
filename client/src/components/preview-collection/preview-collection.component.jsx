@@ -14,8 +14,7 @@ class PreviewCollection extends React.Component{
       (
         <div className='collection-preview'>
           <h1 className='title' onClick={() => {
-            console.log("CLCIKED");
-            console.log(match)
+     
   
             return (
               history.push(`${match.path}/${routeName}`)

@@ -8,8 +8,6 @@ import './menu-item.styles.scss';
 const MenuItem=({title, imageUrl,size,history,linkUrl,match})=>{
 
 
-  console.log("history....");
-  console.log(history);
 
   return(
     (
