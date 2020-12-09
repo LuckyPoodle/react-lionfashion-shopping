@@ -10,7 +10,8 @@ import NotFound from './components/404/notfound.component';
 import Header from './components/header/header.component';
 import Footer from './components/footer/footer';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
-
+import Annoucement from 'react-announcement';
+import trustyproducer from"./assets/trustyproducer.png";
 
 import { addCollectionAndItems, auth, createUserProfileDocument } from './firebase/fire.util';
 
@@ -83,7 +84,10 @@ class App extends React.Component {
       <div >
         <GlobalStyle />
         <Header />
-        
+        <Annoucement
+        title="Sample minimalist React JS Shopping Website"
+        imageSource={trustyproducer}
+        daysToLive={1} />
           <ErrorBoundary>
             <Suspense fallback={<Spinner />}>
               <Switch>
