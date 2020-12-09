@@ -11,7 +11,7 @@ import Header from './components/header/header.component';
 import Footer from './components/footer/footer';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
 import Annoucement from 'react-announcement';
-import trustyproducer from"./assets/trustyproducer.png";
+import trustyproducer from"./assets/trusty-producer.png";
 
 import { addCollectionAndItems, auth, createUserProfileDocument } from './firebase/fire.util';
 
