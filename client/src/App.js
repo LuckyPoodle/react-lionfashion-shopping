@@ -85,7 +85,8 @@ class App extends React.Component {
         <GlobalStyle />
         <Header />
         <Annoucement
-        title="Sample minimalist React JS Shopping Website"
+        title="a minimalist shopping site"
+        subtitle="a sample site built with react js"
         imageSource={trustyproducer}
         daysToLive={1} />
           <ErrorBoundary>

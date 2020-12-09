@@ -9,7 +9,7 @@ const Footer =()=>{
     return(
    
         <div >
-            <h5>Proudly made with React</h5>
+            <h5>A Sample Website from TrustyProducer</h5>
         </div>
 )
 }
